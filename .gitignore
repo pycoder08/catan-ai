@@ -1,0 +1,22 @@
+# virtualenv
+.venv/
+venv/
+ENV/
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# logs / runs / checkpoints (optional: keep or remove if you WANT them tracked)
+runs/
+logs/
+checkpoints/
+
+# OS/editor
+.DS_Store
+.vscode/
