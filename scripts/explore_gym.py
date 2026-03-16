@@ -1,27 +1,21 @@
-import gym
-import catanatron_gym
+try:
+    import gymnasium as gym
+except ImportError:
+    import gym
 import catanatron_gym
 
 def explore():
     print("Loading Environment...")
     
-    # Debug: see what is actually registered
-    from gym.envs.registration import registry
-    print("\nAvailable Catan environments:")
-    # In older versions of gym, registry is a dict directly. In newer, it's an object with env_specs
-    keys = registry.env_specs.keys() if hasattr(registry, 'env_specs') else registry.keys()
+    env_name = "catanatron-v1"
+    print(f"\nAttempting to make: {env_name}")
     
-    catan_envs = [env_id for env_id in keys if 'catan' in env_id.lower()]
-    print(catan_envs)
-    
-    if not catan_envs:
-        print("ERROR: No catan environments found in registry! Did you import catanatron_gym?")
+    try:
+        env = gym.make(env_name)
+    except Exception as e:
+        print(f"ERROR: Failed to make environment {env_name}. Details: {e}")
         return
         
-    env_name = catan_envs[0]
-    print(f"\nAttempting to make: {env_name}")
-    env = gym.make(env_name)
-    
     # 1. Inspect spaces
     print("\n--- SPACES ---")
     print(f"Observation Space: {env.observation_space}")
@@ -34,14 +28,11 @@ def explore():
         obs, info = obs
     print("\n--- INITIAL OBSERVATION ---")
     print(f"Shape: {obs.shape if hasattr(obs, 'shape') else type(obs)}")
-    print(obs)
     
     # 3. Take a random action
     print("\n--- TAKING ONE RANDOM ACTION ---")
     action = env.action_space.sample()
     
-    # gym <=0.25 returns obs, reward, done, info
-    # gym >=0.26 returns obs, reward, terminated, truncated, info
     step_result = env.step(action)
     
     if len(step_result) == 4:
