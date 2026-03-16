@@ -3,7 +3,7 @@ import catanatron_gym
 
 def explore():
     print("Loading Environment...")
-    env = gym.make("catanatron-v1")
+    env = gym.make("catanatron_gym:catanatron-v1")
     
     # 1. Inspect spaces
     print("\n--- SPACES ---")
