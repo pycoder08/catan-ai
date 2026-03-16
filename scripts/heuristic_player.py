@@ -1,5 +1,4 @@
 from catanatron.models.player import Player
-from catanatron.game import ActionType
 import random
 
 class HeuristicPlayer(Player):
@@ -39,19 +38,19 @@ class HeuristicPlayer(Player):
 
         # Base scores defining the heuristic's priorities
         scores = {
-            ActionType.BUILD_CITY: 100,
-            ActionType.BUILD_SETTLEMENT: 80,
-            ActionType.BUY_DEV_CARD: 30,
-            ActionType.BUILD_ROAD: 10,
-            ActionType.PLAY_KNIGHT: 20,
-            ActionType.PLAY_MONOPOLY: 20,
-            ActionType.PLAY_YEAR_OF_PLENTY: 20,
-            ActionType.PLAY_ROAD_BUILDING: 20,
-            ActionType.MOVE_ROBBER: 15,
-            ActionType.MARITIME_TRADE: 5,
-            ActionType.END_TURN: 0,
-            ActionType.ROLL: 50, # Always roll if available
-            ActionType.DISCARD: 0, # Could be improved based on resource values
+            "BUILD_CITY": 100,
+            "BUILD_SETTLEMENT": 80,
+            "BUY_DEV_CARD": 30,
+            "BUILD_ROAD": 10,
+            "PLAY_KNIGHT": 20,
+            "PLAY_MONOPOLY": 20,
+            "PLAY_YEAR_OF_PLENTY": 20,
+            "PLAY_ROAD_BUILDING": 20,
+            "MOVE_ROBBER": 15,
+            "MARITIME_TRADE": 5,
+            "END_TURN": 0,
+            "ROLL": 50, # Always roll if available
+            "DISCARD": 0, # Could be improved based on resource values
         }
 
         score = 0
@@ -59,7 +58,7 @@ class HeuristicPlayer(Player):
         
         # Match by name to avoid potential enum identity issues across module imports
         for k, v in scores.items():
-            if str(k).split('.')[-1] == action_name:
+            if k == action_name:
                 score = v
                 break
 
