@@ -7,7 +7,10 @@ def explore():
     # Debug: see what is actually registered
     from gym.envs.registration import registry
     print("\nAvailable Catan environments:")
-    catan_envs = [env_id for env_id in registry.env_specs.keys() if 'catan' in env_id.lower()]
+    # In older versions of gym, registry is a dict directly. In newer, it's an object with env_specs
+    keys = registry.env_specs.keys() if hasattr(registry, 'env_specs') else registry.keys()
+    
+    catan_envs = [env_id for env_id in keys if 'catan' in env_id.lower()]
     print(catan_envs)
     
     if not catan_envs:
