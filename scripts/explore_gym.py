@@ -3,7 +3,20 @@ import catanatron_gym
 
 def explore():
     print("Loading Environment...")
-    env = gym.make("catanatron_gym:catanatron-v1")
+    
+    # Debug: see what is actually registered
+    from gym.envs.registration import registry
+    print("\nAvailable Catan environments:")
+    catan_envs = [env_id for env_id in registry.env_specs.keys() if 'catan' in env_id.lower()]
+    print(catan_envs)
+    
+    if not catan_envs:
+        print("ERROR: No catan environments found in registry! Did you import catanatron_gym?")
+        return
+        
+    env_name = catan_envs[0]
+    print(f"\nAttempting to make: {env_name}")
+    env = gym.make(env_name)
     
     # 1. Inspect spaces
     print("\n--- SPACES ---")
