@@ -1,5 +1,6 @@
 import gym
 import catanatron_gym
+import catanatron_gym
 
 def explore():
     print("Loading Environment...")
