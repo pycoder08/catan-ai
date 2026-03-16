@@ -27,8 +27,6 @@ class HeuristicPlayer(Player):
         """
         Assigns a score to an action. Higher is better.
         """
-        # Catanatron Action objects can vary slightly by version.
-        # They are usually tuples where the first element is the ActionType enum.
         if isinstance(action, tuple) and len(action) > 0:
             action_type = action[0]
         elif hasattr(action, 'action_type'):
@@ -36,31 +34,46 @@ class HeuristicPlayer(Player):
         else:
             return 0
 
+        action_name = str(action_type).split('.')[-1]
+        
         # Base scores defining the heuristic's priorities
         scores = {
             "BUILD_CITY": 100,
             "BUILD_SETTLEMENT": 80,
-            "BUY_DEV_CARD": 30,
-            "BUILD_ROAD": 10,
+            "PLAY_MONOPOLY": 40,
+            "PLAY_YEAR_OF_PLENTY": 35,
+            "PLAY_ROAD_BUILDING": 30,
+            "BUY_DEV_CARD": 25,
             "PLAY_KNIGHT": 20,
-            "PLAY_MONOPOLY": 20,
-            "PLAY_YEAR_OF_PLENTY": 20,
-            "PLAY_ROAD_BUILDING": 20,
+            "BUILD_ROAD": 10,
             "MOVE_ROBBER": 15,
             "MARITIME_TRADE": 5,
-            "END_TURN": 0,
-            "ROLL": 50, # Always roll if available
-            "DISCARD": 0, # Could be improved based on resource values
+            "ROLL": 500, # Always roll if available (highest priority)
+            "DISCARD": 0, 
+            "END_TURN": -10, # Heavily penalize ending turn if we can do something else
         }
 
-        score = 0
-        action_name = str(action_type).split('.')[-1]
+        score = scores.get(action_name, 0)
         
-        # Match by name to avoid potential enum identity issues across module imports
-        for k, v in scores.items():
-            if k == action_name:
-                score = v
-                break
+        # Action-specific context tweaks
+        if action_name == 'MARITIME_TRADE':
+            # Trading is usually only good if we have an excess of one resource
+            # and need another. In Catanatron, actions might contain (give_res, take_res)
+            # giving it a slightly lower score ensures we build/buy first if possible.
+            score = 5 
+            
+        elif action_name == 'DISCARD':
+            # We want to randomly discard, but prefer to keep valuable resources. 
+            # In a basic heuristic, all discards are equivalent unless we inspect resources.
+            score = random.randint(0, 5) 
+
+        elif action_name == 'PLAY_KNIGHT':
+            # Playing a knight before rolling is often good, or if robber is on us.
+            score += random.randint(0, 10)
+
+        elif action_name == 'MOVE_ROBBER':
+            # Try to place it anywhere
+            score += random.randint(0, 5)
 
         # Tie-breaker: prefer anything over END_TURN if it has no base score
         if score == 0 and 'END_TURN' not in action_name:
