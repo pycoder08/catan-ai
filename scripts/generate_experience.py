@@ -45,7 +45,9 @@ def collect_experience(episodes: int, output_dir: str):
         
         while not done:
             # Sample random action from valid action space
-            action = env.action_space.sample()
+            valid_actions = env.unwrapped.get_valid_actions()
+            import random
+            action = random.choice(valid_actions)
             
             step_result = env.step(action)
             if len(step_result) == 4:
