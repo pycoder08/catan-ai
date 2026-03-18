@@ -29,9 +29,13 @@ def load_experiences(data_dir: str):
     all_data = []
     for f in pkl_files:
         print(f"Loading {f}...")
-        with open(f, "rb") as file:
-            data = pickle.load(file)
-            all_data.extend(data)
+        try:
+            with open(f, "rb") as file:
+                data = pickle.load(file)
+                all_data.extend(data)
+        except (pickle.UnpicklingError, EOFError, Exception) as e:
+            print(f"Warning: Failed to load {f}. It might be corrupted or truncated. Skipping. Error: {e}")
+            continue
     
     print(f"Loaded {len(all_data)} total transitions.")
     return all_data
