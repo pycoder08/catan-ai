@@ -93,7 +93,7 @@ def train(data_dir: str, output_model: str, algo: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train Stable-Baselines3 model offline.")
-    parser.add_argument("--data_dir", type=str, default="data", help="Directory containing experience pickle files")
+    parser.add_argument("--data_dir", type=str, default="../data", help="Directory containing experience pickle files")
     parser.add_argument("--output_model", type=str, default="smart_bot", help="Path to save the resulting model zip")
     parser.add_argument("--algo", type=str, default="dqn", help="Which SB3 algorithm to use (dqn)")
     

@@ -86,7 +86,7 @@ def collect_experience(episodes: int, output_dir: str):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate reinforcement learning experience for Catan.")
     parser.add_argument("--episodes", type=int, default=1, help="Number of games to simulate")
-    parser.add_argument("--output_dir", type=str, default="data", help="Directory to save the pickle files")
+    parser.add_argument("--output_dir", type=str, default="../data", help="Directory to save the pickle files")
     
     args = parser.parse_args()
     collect_experience(args.episodes, args.output_dir)
