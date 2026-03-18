@@ -6,6 +6,7 @@ from stable_baselines3 import DQN
 
 def evaluate(model_path: str, games: int):
     print(f"Loading environment 'catanatron-v1'...")
+    
     env = gym.make("catanatron-v1")
     
     print(f"Loading model from {model_path}...")
